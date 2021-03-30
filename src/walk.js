@@ -2,6 +2,10 @@ module.exports = function (root, enter, exit) {
 	var node = root;
 	start: while (node) {
 		enter(node);
+		if (node.shadowRoot) {
+			node = node.shadowRoot;
+			continue start;
+		}
 		if (node.firstChild) {
 			node = node.firstChild;
 			continue start;
@@ -15,7 +19,7 @@ module.exports = function (root, enter, exit) {
 			if (node == root)
 				node = null;
 			else
-				node = node.parentNode;
+				node = node.parentNode || node.host;
 		}
 	}
 };
